@@ -1,0 +1,8 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: response status (201 created) {'message': 'note created'}
+note over browser:
+browser then appends the
+new note to the array in 
+Spa.js and renders that to 
+the webpage and does not 
+need to refresh.

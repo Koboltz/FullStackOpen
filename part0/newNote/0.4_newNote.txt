@@ -1,0 +1,25 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note right of server:
+The server pushes the new note 
+object (from the request body) 
+to the notes array and 
+then sends the redirect response 
+(302)
+end note
+server-->browser: redirect to '/notes' 
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: Main CSS code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: Main.js
+note over browser:
+browser execues Main.js
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server->browser: RAW Data in JSON
+note over browser:
+browser execues the event handler
+in main.js and renders the result
+to the webpage
+end note
