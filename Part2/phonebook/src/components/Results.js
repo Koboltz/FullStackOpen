@@ -6,7 +6,11 @@ const Results = (props) => {
       <div>
         {props.persons.map(person => {
           if (person.name.toLowerCase().includes(props.filter.toLowerCase())){
-            return <p key={person.name}>{person.name} {person.number}</p>
+             // console.log(`person: ${person.id}`)
+            return (
+              <p key={person.name}>{person.name} {person.number} <button value={person.id} onClick={props.deletePerson}>delete</button></p>
+            )
+            
           }
           return null;
         })}
