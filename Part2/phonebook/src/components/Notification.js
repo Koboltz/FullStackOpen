@@ -2,11 +2,11 @@
 
 const Notification = ({message}) => {
     let notificationStyle;
-    
+  //  console.log(message)
     if (message === null) {
         return null
     } else {
-        if (!message.includes('Information of')) {
+        if (!message.includes('Information of') && !message.includes('validation') && !message.includes('Validation failed')) {
            
          notificationStyle = {
             backgroundColor: 'lightgrey',

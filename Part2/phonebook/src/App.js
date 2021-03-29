@@ -14,7 +14,7 @@ const App = () => {
     personsService  
     .getAll()
     .then(initialPersons => {
-       // console.log(initialPersons)
+       console.log(initialPersons)
       setPersons(initialPersons)
     })
     .catch(err => alert(err))
@@ -51,7 +51,12 @@ const App = () => {
           }, 5000)
         })
         .catch(err => {
+          if (!err.response.data) {
           setErrorMessage(`Information of ${personObj.name} has already been removed from the server`)
+          } else {
+            console.log(err.response.data)
+            setErrorMessage(err.response.data.error)
+          }
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
@@ -71,7 +76,13 @@ const App = () => {
         }, 5000)
       })
       .catch((err) => {
-        alert('Unknown Error')
+        setNewName('');
+        setNewNumber('')
+        setErrorMessage(err.response.data.error)
+        //console.log(err.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
     
     }
