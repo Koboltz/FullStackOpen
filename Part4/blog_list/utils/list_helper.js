@@ -66,15 +66,34 @@ const mostBlogs = (blogs) => {
     })
     .orderBy(['count'], ['desc'])
     .value()
-
-
-    
-
-
-    
-   
   
-   
+  return countArr[0]
+}
+
+const mostLikes = (blogs) => {
+    if (blogs.length === 0) {
+        return {}
+    }
+    
+
+    let countArr = _(blogs)
+    .groupBy('author')
+    .map(author => {
+        let likes = []
+        console.log('author', author)
+       author.map(blog => {
+           likes.push(blog.likes)
+       })
+        return {
+            author: Object.values(author)[0]['author'],
+            likes: likes.reduce((acc, sum) => acc + sum)
+        }
+    })
+    .orderBy(['likes'], ['desc'])
+    .value()
+
+  console.log(countArr)
+  
   return countArr[0]
 }
 
@@ -82,5 +101,6 @@ module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }

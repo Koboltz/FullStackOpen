@@ -191,3 +191,92 @@ describe('most blogs', () => {
     
     
 })
+
+describe('most likes', () => {
+  const emptyBlogs = [];
+  const oneBlog = [{
+      "title": "myBlogtest",
+      "author": "koboltz546",
+      "url": "myblogtest.test.com",
+      "likes": 200
+  }]
+  const multiBlogs = [{
+      "title": "myBlogtest",
+      "author": "koboltz546",
+      "url": "myblogtest.test.com",
+      "likes": 200
+    }, 
+    {
+      "title": "myBlogtest2",
+      "author": "koboltz456",
+      "url": "myblogtest.test.com",
+      "likes": 123
+    },
+    {
+      "title": "myBlogtest3",
+      "author": "koboltz546",
+      "url": "myblogtest.test.com",
+      "likes": 400
+  }]
+  const multiBlogs2 = [ {
+      "title": "myBlogtest3",
+      "author": "koboltz456",
+      "url": "myblogtest.test.com",
+      "likes": 400
+    }, 
+    {
+      "title": "myBlogtest",
+      "author": "koboltz546",
+      "url": "myblogtest.test.com",
+      "likes": 200
+    }, 
+    {
+      "title": "myBlogtest2",
+      "author": "koboltz546",
+      "url": "myblogtest.test.com",
+      "likes": 123
+    },
+   {
+      "title": "myBlogtest",
+      "author": "koboltz546",
+      "url": "myblogtest.test.com",
+      "likes": 200
+    }, 
+    {
+      "title": "myBlogtest2",
+      "author": "koboltz456",
+      "url": "myblogtest.test.com",
+      "likes": 122
+    },
+    {
+      "title": "myBlogtest3",
+      "author": "koboltz123",
+      "url": "myblogtest.test.com",
+      "likes": 400
+  }]
+
+  test('of an empty array returns an empty object', () => {
+      const result = listHelper.mostLikes(emptyBlogs)
+        expect(result).toEqual({})
+  })
+
+  test('of an array wih one item returns the author name and likes', () => {
+      const result = listHelper.mostLikes(oneBlog)
+
+      expect(result).toEqual({ author: "koboltz546", likes: 200})
+  })
+
+  test('of an array with some items returns the author name and count of the most frequent author', () => {
+      const result = listHelper.mostLikes(multiBlogs)
+
+      expect(result).toEqual({ author: "koboltz546", likes: 600})
+  })
+
+  test('of an array with lots of items returns the author name and count of the most frequent author', () => {
+      const result = listHelper.mostLikes(multiBlogs2)
+
+      expect(result).toEqual({ author: "koboltz546", likes: 523 })
+  })
+  
+  
+})
