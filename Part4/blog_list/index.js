@@ -1,14 +1,9 @@
 const http = require('http')
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const blogsRouter = require('./routers/blogs');
+const app = require('./app')
+const config = require('./utils/config')
 
-app.use(cors())
-app.use(express.json())
-app.use('/api/blogs', blogsRouter)
+const server = http.createServer(app)
 
-const PORT = 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+server.listen(config.PORT, () => {
+  console.log(`Server is running on port ${config.PORT}`)
 })
