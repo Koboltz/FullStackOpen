@@ -53,7 +53,6 @@ test('blog creates a new blog and adds to database', async () => {
                 title: 'TEST',
                 author: 'tester',
                 url: 'test@testing.com',
-                likes: 5
             })
             .expect(201)
         const newBlogs = await helper.blogsInDb()
@@ -63,7 +62,32 @@ test('blog creates a new blog and adds to database', async () => {
         const titles = newBlogs.map(b => b.title)
         expect(titles).toContain('TEST')
 })
+test('blog creates a new blog with default likes set to zero', async () => {
+    const response = await api
+        .post('/api/blogs')
+        .send({
+            title: 'TEST',
+            author: 'tester',
+            url: 'test@testing.com',
+        })
+        .expect(201)
+    const newBlogs = await helper.blogsInDb()
+    const createdNote = newBlogs.filter(blog => blog.title === 'TEST')[0].likes
+    expect(createdNote).toBe(0)
+})
 
+test('blog returns 400 error if request body is missing title or url', async() => {
+    
+    try { const response = await api
+        .post('/api/blogs')
+        .send({
+            author: 'bad request'
+        })
+        .expect(400)
+    } catch(err) {
+        console.log('error handled')
+    }
+})
 
 afterAll(() => {
     mongoose.connection.close()
