@@ -132,6 +132,12 @@ describe('update a blog', () => {
         expect(blogsAfterUpdate).toContainEqual(response.body)
 
     })
+
+    test('returns 404 Not Found if id is invalid', async () => {
+        await api
+            .put('/api/blogs/terribleid')
+            .expect(404)
+    })
 })
 
 afterAll(() => {
