@@ -11,4 +11,4 @@ const tokenExtractor = (request, response, next) => {
     next()
   }
 
-module.exports = {tokenExtractor}
+module.exports = {tokenExtractor} 
