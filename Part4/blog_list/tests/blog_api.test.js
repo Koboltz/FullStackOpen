@@ -61,6 +61,7 @@ describe('new blog creations' , () => {
             expect(titles).toContain('TEST')
     })
     test('blog creates a new blog with default likes set to zero', async () => {
+    
         const response = await api
             .post('/api/blogs')
             .send({
