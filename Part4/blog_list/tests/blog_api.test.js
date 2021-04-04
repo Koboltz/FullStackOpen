@@ -5,18 +5,37 @@ const helper = require('../utils/backend_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
+
 require('express-async-errors')
 
 beforeEach(async () => {
-
-    
-        
-
     await Blog.deleteMany({})
     console.log('cleared')
 
+    await User.deleteMany({})
+
+    const password = await bcrypt.hash('test', 10)
+
+    const user = new User({
+        "username": "Koboltz",
+        "name": "Test Tester",
+        "passwordHash": password,
+        "blogs": []
+    })
+
+    await user.save()
+
+
     const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
-    const promises = blogObjects.map(blog => blog.save())
+    const promises = blogObjects.map(async (blog) => {
+        const user = await User.findOne({username: "Koboltz"})
+        blog.user = user._id
+        blog.save()
+    
+    })
+    console.log('blogs', await Blog.find({}))
     await Promise.all(promises)
     console.log('saved')
     
@@ -43,14 +62,36 @@ test('blog had a property called id', async () => {
     expect(response.body[0].id).toBeDefined()
 })
 
+test('logging in returns a token', async () => {
+    const authorized = await api
+    .post('/api/login')
+    .send({
+        "username": "Koboltz",
+        "password": "test"
+    })
+    .expect(200)
+  
+})
+
 describe('new blog creations' , () => {
     test('blog creates a new blog and adds to database', async () => {
+           const authorized = await api
+                .post('/api/login')
+                .send({
+                    "username": "Koboltz",
+                    "password": "test"
+                })
+                .expect(200)
+            const token = JSON.parse(authorized.text).token
+            
             const response = await api
                 .post('/api/blogs')
+                .auth(token, { type: 'bearer'})
                 .send({
                     title: 'TEST',
                     author: 'tester',
                     url: 'test@testing.com',
+                
                 })
                 .expect(201)
             const newBlogs = await helper.blogsInDb()
@@ -89,7 +130,7 @@ describe('new blog creations' , () => {
 describe('blog deletions', () => {
     test('deletes blog with valid id', async () => {
         const blogsAtStart = await helper.blogsInDb()
-        console.log('blogs', blogsAtStart)
+        //console.log('blogs', blogsAtStart)
         const blogToDelete = blogsAtStart[0]
         
         await api
