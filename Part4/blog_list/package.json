@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "stable:commit": "git add . && git commit -m stable_build"
+    "stable:commit": "git add . && git commit -m stable_build",
+    "togit": "git add . && git commit -m completed && git push origin master"
   },
   "author": "Curtis Anderson",
   "license": "ISC",

@@ -32,7 +32,7 @@ const initialUsers = [
     {
         "username": "Koboltz",
         "name": "Test Tester",
-        "_id": "123"
+    
     },
     {
         "username": "Koboltz2",

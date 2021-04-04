@@ -80,7 +80,7 @@ const mostLikes = (blogs) => {
     .groupBy('author')
     .map(author => {
         let likes = []
-        console.log('author', author)
+      //  console.log('author', author)
        author.map(blog => {
            likes.push(blog.likes)
        })
@@ -92,7 +92,7 @@ const mostLikes = (blogs) => {
     .orderBy(['likes'], ['desc'])
     .value()
 
-  console.log(countArr)
+ // console.log(countArr)
   
   return countArr[0]
 }

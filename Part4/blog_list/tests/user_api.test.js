@@ -11,17 +11,17 @@ require('express-async-errors')
 beforeEach(async () => {
 
     await User.deleteMany({})
-    console.log('cleared')
+   // console.log('cleared')
 
     const userObjects = helper.initialUsers.map(user => new User(user))
     const promises = userObjects.map(user => user.save())
     await Promise.all(promises)
-    console.log('saved')
+    //console.log('saved')
 
 })
 
 test('returns the correct amount of users in JSON format', async () => {
-    console.log('Testing GET...')
+ //   console.log('Testing GET...')
     const response = await api
         .get('/api/users')
         .expect(200)

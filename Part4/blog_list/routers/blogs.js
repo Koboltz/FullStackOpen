@@ -20,7 +20,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     const user = request.user
 
     if (!request.token) {
-      response.status(401).json({ error: 'missing token'})
+      return response.status(401).json({ error: 'missing token'})
     }
     
     const newBlog = {
@@ -68,11 +68,25 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   
 })
 
-blogsRouter.put('/:id', async (request, response) => {
-  const updated = await Blog.findByIdAndUpdate(request.params.id, request.body, {new: true}, (err) => {
-    response.status(404)
-  })
-  response.status(200).json(updated)
+blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
+  
+ try {
+  const blog = await Blog.findById(request.params.id)
+  
+  if(blog.user.toString() === request.user._id.toString()) {
+  
+
+    const updated = await Blog.findByIdAndUpdate(request.params.id, request.body, {new: true}, (err) => {
+
+    })
+    
+    response.status(200).json(updated)
+  } else {
+    response.status(401).json({error: 'Unauthorised attempt'}).end()
+  }
+ } catch (err) {
+   response.status(404).end()
+ }
 })
 
 module.exports = blogsRouter 
