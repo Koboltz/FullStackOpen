@@ -14,6 +14,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState(false)
 
   const blogsList = () => {
     return (
@@ -57,17 +59,31 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setMessage('Logged in Successfully')
+      setTimeout(() => {
+        setMessage('')
+      }, 5000)
     } catch (err) {
-      alert('invalid-login')
+      setMessage('wrong username or password')
+      setError(true)
+      setTimeout(() => {
+        setMessage('')
+        setError(false)
+      }, 5000)
     }
   }
 
   const handleLogout = () => {
     loginService.logout()
     setUser(null)
+    setMessage('Successfully logged out')
+    setTimeout(() => {
+      setMessage('')
+    }, 5000)
   }
 
   const handleAddBlog = async (event) => {
+    try {
     event.preventDefault()
     blogsService.setToken(user.token)
    const response = await blogsService.create({
@@ -75,16 +91,28 @@ const App = () => {
       author,
       url,
     })
-
+    setMessage(`a new blog ${title} by ${author} added`)
+    setTimeout(() => {
+      setMessage('')
+    }, 5000)
     setTitle('')
     setAuthor('')
     setUrl('')
     setBlogs(blogs.concat(response))
+    
+  } catch (err) {
+    setError(true)
+    setMessage('Blog could not be added')
+    setTimeout(() => {
+      setError(false)
+      setMessage('')
+    })
+  }
   } 
 
   return (
     <div>
-      <Notification />
+      <Notification error={error} message={message}/>
       {user === null
       ? <Login handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
       : (
