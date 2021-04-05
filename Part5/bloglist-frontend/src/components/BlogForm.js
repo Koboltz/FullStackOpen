@@ -1,5 +1,13 @@
-const BlogForm = (props) => {
+import { useState } from 'react'
 
+const BlogForm = (props) => {
+    const [formVisible, setFormVisible] = useState(false)
+
+    if (formVisible === false) {
+        return (
+            <button onClick={() => setFormVisible(true)}>Add blog</button>
+        )
+    } else {
 
     return (
         <div>
@@ -29,9 +37,11 @@ const BlogForm = (props) => {
                     /><br /><br />
                     <button type='submit'>create</button>
                 </div>
-            </form>
+            </form><br />
+            <button onClick={() => setFormVisible(false)}>cancel</button>
         </div>
     )
+    }
 }
 
 export default BlogForm

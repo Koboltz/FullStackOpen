@@ -17,7 +17,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "stable:commit": "git add . && git commit -m stable_build"
+    "stable:commit": "git add . && git commit -m stable_build",
+    "togit": "git add . && git commit -m stable_build && git push origin master"
   },
   "eslintConfig": {
     "extends": [
