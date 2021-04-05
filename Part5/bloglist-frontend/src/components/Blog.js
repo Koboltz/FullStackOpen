@@ -9,7 +9,7 @@ const Blog = ({blog}) => {
   }
 
   const handleLike = async () => {
-
+    
   }
 
   const info = () => {
