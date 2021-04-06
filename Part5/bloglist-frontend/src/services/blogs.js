@@ -35,11 +35,28 @@ const update = async (newBlog, id) => {
 
 }
 
+const deleteBlog = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  return response.data
+}
+
+const verifyOwner = async(userToken) => {
+const response = await axios.post(`/api/users/check`, {token: userToken})
+return response.data
+}
+
+
 const blogsService = {
   getAll,
   setToken,
   create,
-  update
+  update,
+  deleteBlog,
+  verifyOwner
 }
 
 export default blogsService

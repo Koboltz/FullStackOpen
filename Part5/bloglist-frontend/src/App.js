@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
@@ -11,6 +12,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -23,7 +25,7 @@ const App = () => {
          <BlogForm title={title} setTitle={setTitle} author={author} setAuthor={setAuthor} url={url} setUrl={setUrl} handleAddBlog={handleAddBlog} />
          <br />
         <h2>blogs</h2> 
-          {blogs.map(blog => <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />)}
+          {blogs.map(blog => <Blog key={blog.id} blog={blog} fetchAll={fetchAll} user={user}/>)}
           <button type='button' onClick={handleLogout}>Logout</button>
           <br />
          
@@ -32,16 +34,22 @@ const App = () => {
       )
   }
 
+  const fetchAll = async() => {
+    const response = await blogsService.getAll()
+    response.sort(( a,b ) => b.likes - a.likes)
+    setBlogs(response)
+  }
+
   useEffect(() => {
-    blogsService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    fetchAll()
   }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
+      blogsService.setToken(user.token)
       setUser(user)
 
     }
@@ -108,8 +116,7 @@ const App = () => {
       setMessage('')
     })
   }
-  }
-  
+  } 
 
   return (
     <div>
