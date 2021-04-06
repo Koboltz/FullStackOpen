@@ -1,6 +1,8 @@
+const jwt = require('jsonwebtoken')
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+require('dotenv').config()
 require('express-async-errors')
 
 usersRouter.get('/', async (req, res) => {
@@ -39,6 +41,11 @@ usersRouter.post('/', async (req, res) => {
   
   
 
+})
+
+usersRouter.post('/check', async (req, res) => {
+    const response = jwt.verify(req.body.token, process.env.SECRET)
+    res.send(response)
 })
 
 
