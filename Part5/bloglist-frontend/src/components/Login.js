@@ -1,38 +1,52 @@
-import React from 'react'
 
-const Login = (props) => (
-  <div>
-    <h1>Log in to the application</h1>
-    <form onSubmit={props.handleLogin}>
+import PropTypes from 'prop-types'
+
+const Login = ({handleLogin, username, setUsername, password, setPassword}) => {
+
+
+    return (
         <div>
-            <br />
-            <h2>username: <br /></h2>
-            {
-            //debug: {props.username}
-            }
-            <input 
-            type='text'
-            value={props.username}
-            name='username'
-            onChange={({target}) => props.setUsername(target.value)}
-            />
-        </div>
-        <div>
-            <h2>password: <br /></h2>
-            {
-            //debug: {props.password}
-            }
-            <input 
-            type='password'
-            value={props.password}
-            name='password'
-            onChange={({target}) => props.setPassword(target.value)}
-            />
-        </div>
-        <br />
-        <button type='submit'>Login</button>
-    </form>
-  </div>  
-)
+            <h1>Log in to the application</h1>
+            <form onSubmit={handleLogin}>
+                <div>
+                    <br />
+                    <h2>username: <br /></h2>
+                    {
+                    //debug: {username}
+                    }
+                    <input 
+                        type='text'
+                        value={username}
+                        name='username'
+                        onChange={({target}) => setUsername(target.value)}
+                    />
+                </div>
+                <div>
+                    <h2>password: <br /></h2>
+                    {
+                    //debug: {password}
+                    }
+                    <input 
+                        type='password'
+                        value={password}
+                        name='password'
+                        onChange={({target}) => setPassword(target.value)}
+                    />
+                </div>
+                <br />
+                <button type='submit'>Login</button>
+            </form>
+        </div>  
+    )}
+
+
+Login.propTypes = {
+    handleLogin: PropTypes.func.isRequired,
+    username: PropTypes.string.isRequired,
+    setUsername: PropTypes.func.isRequired,
+    password: PropTypes.string.isRequired,
+    setPassword: PropTypes.func.isRequired
+}
+
 
 export default Login

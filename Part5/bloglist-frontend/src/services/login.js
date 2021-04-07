@@ -6,7 +6,7 @@ const login = async (loginObj) => {
     
 
     const response = await axios
-         .post(baseUrl, loginObj)
+        .post(baseUrl, loginObj)
         
     return response.data
 }
