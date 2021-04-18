@@ -45,8 +45,11 @@ const deleteBlog = async (id) => {
 }
 
 const verifyOwner = async(userToken) => {
-    const response = await axios.post('/api/users/check', {token: userToken})
-    return response.data
+    try {const response = await axios.post('/api/users/check', {token: userToken})
+        return response.data
+    } catch (err) {
+        return {error : err.message}
+    }
 }
 
 

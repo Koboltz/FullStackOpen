@@ -25,7 +25,7 @@ const App = () => {
                 <BlogForm title={title} setTitle={setTitle} author={author} setAuthor={setAuthor} url={url} setUrl={setUrl} handleAddBlog={handleAddBlog} />
                 <br />
                 <h2>blogs</h2> 
-                {blogs.map(blog => <Blog key={blog.id} blog={blog} fetchAll={fetchAll} user={user}/>)}
+                {blogs.map(blog => <Blog key={blog.id} blog={blog} fetchAll={fetchAll} user={user} blogs={blogs} handleLike={handleLike}/>)}
                 <button type='button' onClick={handleLogout}>Logout</button>
                 <br />
             </div>
@@ -114,7 +114,15 @@ const App = () => {
                 setMessage('')
             })
         }
-    } 
+    }
+    
+    const handleLike = async (toUpdate, id) => {
+        try {
+            await blogsService.update(toUpdate, id)
+        } catch (err) {
+            return (<div>Unable to send a like</div>  )
+        }
+    }
 
     return (
         <div>

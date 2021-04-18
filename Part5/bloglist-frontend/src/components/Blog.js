@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import blogsService from '../services/blogs'
 
 
-const Blog = ({blog, fetchAll, user}) => {
+const Blog = ({blog, fetchAll, user, blogs, handleLike}) => {
     const [allInfo, setAllInfo] = useState(false)
     const [likes, setLikes] = useState(blog.likes)
     const [owner, setOwner] = useState(false)
@@ -19,7 +19,7 @@ const Blog = ({blog, fetchAll, user}) => {
 
     useEffect(() => {
         const ownerCheck = async () => { const blogOwner = await blogsService.verifyOwner(user.token)
-        //console.log(blogOwner.id === blog.user.id)
+       
             if (blogOwner.id === blog.user.id) {
                 setOwner(true)
             } else {
@@ -27,21 +27,24 @@ const Blog = ({blog, fetchAll, user}) => {
             }
         }
         ownerCheck()
-    }, [blog.user.id, user.token])
+        
+    }, [blog.user.id, user.token, blogs, owner])
 
-    const handleLike = async() => {
-        console.log(blog.id)
+    const handleNewLike = async() => {
+        // console.log(blog.id)
         const toUpdate = {
             user: blog.user.id,
             likes: blog.likes + 1,
-            author: blog.author,
+            author: blog.author, 
             title: blog.title,
             url: blog.url
         }
-
-        await blogsService.update(toUpdate, blog.id)
-        setLikes(likes + 1)
-
+        try {
+            setLikes(likes + 1)
+            handleLike(toUpdate, blog.id)
+        } catch (err) {
+            return (<div>Unable to send a like</div>  )
+        }
         fetchAll()
     }
 
@@ -62,7 +65,7 @@ const Blog = ({blog, fetchAll, user}) => {
             <div>
                 {blog.title} <button onClick={() => setAllInfo(false)}>hide</button><br />
                 {blog.url} <br />
-                likes: {likes} <button onClick={handleLike}>like</button> <br />
+                likes: {likes} <button className='like-button' onClick={handleNewLike}>like</button> <br />
                 {blog.author}
                 <br />
                 {blog.id}
@@ -74,8 +77,8 @@ const Blog = ({blog, fetchAll, user}) => {
 
     const basic = () => {
         return (
-            <div>
-                {blog.title} {blog.author} <button onClick={() => setAllInfo(true)}>view</button>
+            <div className='basic'>
+                {blog.title} {blog.author} <button className='show-info' onClick={() => setAllInfo(true)}>view</button>
             </div>
         )
     }
@@ -97,12 +100,14 @@ Blog.propTypes = {
         url: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         author: PropTypes.string.isRequired,
-        user: PropTypes.object.isRequired,
-        id: PropTypes.string.isRequired,
+        user:  PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.object
+        ]),
+        id: PropTypes.string,
     }),
-    fetchAll: PropTypes.func.isRequired,
-    user: PropTypes.shape({
-        token: PropTypes.string
-    })
+    fetchAll: PropTypes.func,
+    user: PropTypes.object,
+    blogs: PropTypes.array
 }
 export default Blog
